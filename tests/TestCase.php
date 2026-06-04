@@ -23,10 +23,13 @@ abstract class TestCase extends Orchestra
      */
     protected function getPackageProviders($app): array
     {
+        // RjcmsServiceProvider is listed FIRST on purpose: it must not assume
+        // Spatie's or Livewire's providers have booted before it, mirroring how
+        // a real host app may load the package before its dependencies.
         return [
+            RjcmsServiceProvider::class,
             LivewireServiceProvider::class,
             PermissionServiceProvider::class,
-            RjcmsServiceProvider::class,
         ];
     }
 

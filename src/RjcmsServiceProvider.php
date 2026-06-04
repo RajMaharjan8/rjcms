@@ -26,10 +26,6 @@ class RjcmsServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/rjcms.php', 'rjcms');
-
-        // Use our extended Permission model (adds `action`/`group` helpers)
-        // wherever Spatie resolves a permission.
-        config(['permission.models.permission' => Permission::class]);
     }
 
     /**
@@ -37,6 +33,13 @@ class RjcmsServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Point Spatie at our extended Permission model (adds `action`/`group`
+        // helpers). Done in boot(), not register(): by now Spatie has merged its
+        // full permission config, so setting this single key can't clobber its
+        // other defaults (models.role, models.team) the way a register-time
+        // shallow merge would.
+        config(['permission.models.permission' => Permission::class]);
+
         $this->registerRoutes();
         $this->registerViewsAndComponents();
         $this->registerLivewireComponents();
