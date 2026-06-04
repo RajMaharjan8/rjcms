@@ -1,0 +1,63 @@
+{
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "rjcodes/rjcms",
+    "description": "A WordPress-style content management system for Laravel: an admin panel, a custom BREAD field-builder, media library, menus, roles & permissions, and a public blog — installable into any Laravel app.",
+    "type": "library",
+    "keywords": [
+        "laravel",
+        "cms",
+        "admin",
+        "bread",
+        "content-management",
+        "livewire"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "RJ Codes",
+            "email": "2rajm48952@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "illuminate/contracts": "^12.0 || ^13.0",
+        "illuminate/support": "^12.0 || ^13.0",
+        "livewire/livewire": "^4.0 || ^4.3",
+        "spatie/laravel-permission": "^7.4"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.0 || ^11.0",
+        "pestphp/pest": "^4.0",
+        "pestphp/pest-plugin-laravel": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rjcodes\\Rjcms\\": "src/",
+            "Rjcodes\\Rjcms\\Database\\Factories\\": "database/factories/",
+            "Rjcodes\\Rjcms\\Database\\Seeders\\": "database/seeders/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Rjcodes\\Rjcms\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Rjcodes\\Rjcms\\RjcmsServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        },
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
