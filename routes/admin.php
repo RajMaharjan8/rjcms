@@ -16,14 +16,16 @@ use Rjcodes\Rjcms\Http\Controllers\Admin\RoleController;
 use Rjcodes\Rjcms\Http\Controllers\Admin\SettingController;
 use Rjcodes\Rjcms\Http\Controllers\Admin\UserController;
 use Rjcodes\Rjcms\Http\Controllers\Auth\LoginController;
+use Rjcodes\Rjcms\Http\Middleware\Authenticate;
+use Rjcodes\Rjcms\Http\Middleware\RedirectIfAuthenticated;
 
 Route::prefix(config('rjcms.prefix', 'admin'))->name('admin.')->group(function () {
-    Route::middleware('guest')->group(function () {
+    Route::middleware(RedirectIfAuthenticated::class)->group(function () {
         Route::get('login', [LoginController::class, 'show'])->name('login');
         Route::post('login', [LoginController::class, 'store'])->name('login.store');
     });
 
-    Route::middleware('auth')->group(function () {
+    Route::middleware(Authenticate::class)->group(function () {
         Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
 
         Route::group([], function () {

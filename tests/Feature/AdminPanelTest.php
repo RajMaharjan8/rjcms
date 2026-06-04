@@ -26,6 +26,12 @@ it('renders the guest login page', function () {
         ->assertSee('Log In', false);
 });
 
+it('redirects unauthenticated visitors to the CMS login page', function () {
+    // Must NOT throw "Route [login] not defined" — it redirects to admin.login.
+    $this->get('/admin')->assertRedirect(route('admin.login'));
+    $this->get('/admin/breads')->assertRedirect(route('admin.login'));
+});
+
 it('renders the admin dashboard for a super admin', function () {
     // Authenticate against the CMS's own guard, exactly as the admin area does.
     $this->actingAs(superAdmin(), 'rjcms')
