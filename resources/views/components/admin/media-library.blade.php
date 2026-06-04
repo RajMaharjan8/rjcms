@@ -13,10 +13,21 @@ new class extends Component
     #[Url(as: 'q', except: '')]
     public string $search = '';
 
+    #[Url(as: 'perPage', except: 24)]
+    public int $perPage = 24;
+
     /**
      * Reset to the first page whenever the search term changes.
      */
     public function updatedSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    /**
+     * Reset to the first page whenever the page size changes.
+     */
+    public function updatedPerPage(): void
     {
         $this->resetPage();
     }
@@ -33,7 +44,7 @@ new class extends Component
                 $query->where(fn ($q) => $q->where('name', 'like', $term)->orWhere('alt_text', 'like', $term));
             })
             ->latest()
-            ->paginate(24);
+            ->paginate($this->perPage);
     }
 };
 ?>
@@ -83,6 +94,9 @@ new class extends Component
             @endforeach
         </div>
 
-        <div class="mt-4">{{ $this->media->links() }}</div>
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+            <x-admin.livewire-per-page :options="[12, 24, 48, 96]" />
+            <div>{{ $this->media->links() }}</div>
+        </div>
     @endif
 </div>

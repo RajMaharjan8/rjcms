@@ -60,9 +60,18 @@
         </nav>
 
         <div class="border-t border-white/10 p-4">
-            <a href="{{ route('admin.account.edit') }}" class="block rounded px-1 py-0.5 transition hover:bg-wp-menu-hover">
-                <p class="text-sm font-medium text-white">{{ auth()->user()->name }}</p>
-                <p class="truncate text-xs text-wp-menu-text">{{ auth()->user()->email }}</p>
+            <a href="{{ route('admin.account.edit') }}" class="flex items-center gap-2.5 rounded px-1 py-0.5 transition hover:bg-wp-menu-hover">
+                <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-wp-menu-hover text-sm font-semibold text-white">
+                    @if (auth()->user()->avatarUrl())
+                        <img src="{{ auth()->user()->avatarUrl() }}" alt="{{ auth()->user()->name }}" class="h-full w-full object-cover">
+                    @else
+                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    @endif
+                </span>
+                <span class="min-w-0">
+                    <span class="block text-sm font-medium text-white">{{ auth()->user()->name }}</span>
+                    <span class="block truncate text-xs text-wp-menu-text">{{ auth()->user()->email }}</span>
+                </span>
             </a>
             <div class="mt-3 flex gap-2">
                 <a href="{{ route('admin.account.edit') }}"

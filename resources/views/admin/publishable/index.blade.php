@@ -70,5 +70,8 @@
     </table>
 </div>
 
-<div class="mt-4">{{ $records->links() }}</div>
+<div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+    <x-admin.per-page :paginator="$records" />
+    <div>{{ $records->withQueryString()->links() }}</div>
+</div>
 @endsection

@@ -6,12 +6,35 @@
 @section('content')
 @php($inputClass = 'w-full rounded border border-wp-border bg-white px-3 py-1.5 text-sm text-wp-ink shadow-sm transition focus:border-wp-blue focus:ring-1 focus:ring-wp-blue focus:outline-none')
 
-<form method="POST" action="{{ route('admin.account.update') }}" class="max-w-3xl">
+<form method="POST" action="{{ route('admin.account.update') }}" enctype="multipart/form-data" class="max-w-3xl">
     @csrf
     @method('PUT')
 
     <x-admin.postbox title="Profile" body-class="px-5 py-1">
         <div class="divide-y divide-wp-border-light">
+            <div class="grid gap-2 py-4 sm:grid-cols-[180px_minmax(0,1fr)] sm:items-start sm:gap-4">
+                <span class="pt-1.5 text-sm font-semibold text-wp-ink">Profile photo</span>
+                <x-admin.field name="avatar" hint="Square images look best. Max 5MB.">
+                    <div class="flex items-center gap-4">
+                        <span class="inline-flex h-16 w-16 items-center justify-center overflow-hidden rounded-full border border-wp-border bg-wp-bg text-lg font-semibold text-wp-muted">
+                            @if ($user->avatarUrl())
+                                <img src="{{ $user->avatarUrl() }}" alt="{{ $user->name }}" class="h-full w-full object-cover">
+                            @else
+                                {{ strtoupper(substr($user->name, 0, 1)) }}
+                            @endif
+                        </span>
+                        <div class="flex flex-col gap-1.5">
+                            <input id="avatar" name="avatar" type="file" accept="image/*"
+                                   class="text-sm text-wp-ink file:mr-3 file:rounded file:border file:border-wp-border file:bg-white file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-wp-blue hover:file:bg-blue-50">
+                            @if ($user->avatarUrl())
+                                <label class="flex items-center gap-1.5 text-xs text-wp-muted">
+                                    <input type="checkbox" name="remove_avatar" value="1"> Remove current photo
+                                </label>
+                            @endif
+                        </div>
+                    </div>
+                </x-admin.field>
+            </div>
             <div class="grid gap-2 py-4 sm:grid-cols-[180px_minmax(0,1fr)] sm:items-start sm:gap-4">
                 <label for="name" class="pt-1.5 text-sm font-semibold text-wp-ink">Username</label>
                 <x-admin.field name="name">

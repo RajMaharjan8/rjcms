@@ -35,8 +35,10 @@ class CategoryController extends Controller implements HasMiddleware
      */
     public function index(): View
     {
+        $perPage = max(1, min(request()->integer('perPage', 15), 100));
+
         return view('rjcms::admin.categories.index', [
-            'categories' => Category::withCount('posts')->orderBy('name')->paginate(15),
+            'categories' => Category::withCount('posts')->orderBy('name')->paginate($perPage),
         ]);
     }
 

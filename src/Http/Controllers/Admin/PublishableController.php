@@ -49,8 +49,10 @@ abstract class PublishableController extends Controller
     {
         $this->gate('browse');
 
+        $perPage = max(1, min(request()->integer('perPage', 15), 100));
+
         return view('rjcms::admin.publishable.index', $this->viewData([
-            'records' => $this->baseQuery()->latest()->paginate(15),
+            'records' => $this->baseQuery()->latest()->paginate($perPage),
         ]));
     }
 

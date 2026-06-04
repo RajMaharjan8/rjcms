@@ -15,10 +15,21 @@ new class extends Component
 
     public string $sortDirection = 'asc';
 
+    #[Url(as: 'perPage', except: 15)]
+    public int $perPage = 15;
+
     /**
      * Reset to the first page whenever the search term changes.
      */
     public function updatedSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    /**
+     * Reset to the first page whenever the page size changes.
+     */
+    public function updatedPerPage(): void
     {
         $this->resetPage();
     }
@@ -40,7 +51,7 @@ new class extends Component
         return Role::withCount(['permissions', 'users'])
             ->when($this->search !== '', fn ($query) => $query->where('name', 'like', '%'.$this->search.'%'))
             ->orderBy('name', $this->sortDirection)
-            ->paginate(10);
+            ->paginate($this->perPage);
     }
 };
 ?>
@@ -100,5 +111,8 @@ new class extends Component
         </table>
     </div>
 
-    <div class="mt-4">{{ $this->roles->links() }}</div>
+    <div class="mt-4 flex flex-wrap items-center justify-between gap-3">
+        <x-admin.livewire-per-page />
+        <div>{{ $this->roles->links() }}</div>
+    </div>
 </div>

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
+use Rjcodes\Rjcms\Actions\StoreMedia;
 use Rjcodes\Rjcms\Http\Controllers\Controller;
 
 /**
@@ -35,6 +36,8 @@ class AccountController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
             'password' => ['nullable', 'confirmed', Password::min(8)],
             'current_password' => ['nullable', 'required_with:password', 'current_password'],
+            'avatar' => ['nullable', 'image', 'max:5120'],
+            'remove_avatar' => ['nullable', 'boolean'],
         ], [
             'current_password.current_password' => 'Your current password is incorrect.',
         ]);
@@ -44,6 +47,12 @@ class AccountController extends Controller
 
         if (filled($validated['password'] ?? null)) {
             $user->password = Hash::make($validated['password']);
+        }
+
+        if ($request->boolean('remove_avatar')) {
+            $user->avatar = null;
+        } elseif ($request->hasFile('avatar')) {
+            $user->avatar = (new StoreMedia)($request->file('avatar'))->id;
         }
 
         $user->save();

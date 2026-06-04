@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 use Rjcodes\Rjcms\Database\Factories\UserFactory;
 use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'avatar'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -31,6 +31,16 @@ class User extends Authenticatable
     protected static function newFactory(): Factory
     {
         return UserFactory::new();
+    }
+
+    /**
+     * The public URL of the user's avatar image, or null when none is set.
+     */
+    public function avatarUrl(): ?string
+    {
+        return $this->avatar
+            ? Media::find($this->avatar)?->url
+            : null;
     }
 
     /**
