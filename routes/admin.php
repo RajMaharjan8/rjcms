@@ -25,7 +25,7 @@ Route::prefix(config('rjcms.prefix', 'admin'))->name('admin.')->group(function (
         Route::post('login', [LoginController::class, 'store'])->name('login.store');
     });
 
-    Route::middleware(Authenticate::class)->group(function () {
+    Route::middleware(Authenticate::class.':'.config('rjcms.guard', 'rjcms'))->group(function () {
         Route::post('logout', [LoginController::class, 'destroy'])->name('logout');
 
         Route::group([], function () {

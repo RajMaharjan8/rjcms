@@ -57,7 +57,10 @@ it('authenticates the seeded admin through the real login flow', function () {
         'password' => config('rjcms.admin.password'),
     ])->assertRedirect(route('admin.dashboard'));
 
+    // Real session (no actingAs): dashboard loads, and the login page bounces
+    // back to it — proving no redirect loop between auth and guest middleware.
     $this->get('/admin')->assertOk();
+    $this->get('/admin/login')->assertRedirect(route('admin.dashboard'));
 });
 
 it('resolves a package Livewire single-file component by bare name', function () {

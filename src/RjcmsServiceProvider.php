@@ -11,7 +11,6 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\View\View as ViewInstance;
 use Livewire\Livewire;
 use Rjcodes\Rjcms\Console\Commands\InstallCommand;
-use Rjcodes\Rjcms\Http\Middleware\UseRjcmsGuard;
 use Rjcodes\Rjcms\Models\Bread;
 use Rjcodes\Rjcms\Models\Permission;
 
@@ -86,15 +85,14 @@ class RjcmsServiceProvider extends ServiceProvider
     {
         $web = config('rjcms.middleware', ['web']);
 
-        // Admin panel — self-prefixes with config('rjcms.prefix'). The
-        // UseRjcmsGuard middleware makes the CMS guard the default here so
-        // login/auth/gates all resolve the package's User model.
-        Route::middleware([...$web, UseRjcmsGuard::class])->group(function (): void {
+        // Admin panel — self-prefixes with config('rjcms.prefix'). Auth is
+        // pinned to the CMS guard explicitly inside the route file (not via the
+        // default guard), so it never depends on middleware ordering.
+        Route::middleware($web)->group(function (): void {
             $this->loadRoutesFrom(__DIR__.'/../routes/admin.php');
         });
 
-        // Public blog/pages — registered last so admin paths win. These use the
-        // host's default guard (no CMS guard switch).
+        // Public blog/pages — registered last so admin paths win.
         Route::middleware($web)->group(function (): void {
             $this->loadRoutesFrom(__DIR__.'/../routes/public.php');
 
