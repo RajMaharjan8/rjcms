@@ -1,7 +1,7 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
     "name": "rjcodes/rjcms",
-    "description": "A WordPress-style content management system for Laravel: an admin panel, a custom BREAD field-builder, media library, menus, roles & permissions, and a public blog — installable into any Laravel app.",
+    "description": "After spending countless hours with Voyager, I found myself wishing for 'just one more feature' a little too often. Instead of waiting, I started building. The result is a lightweight Laravel CMS focused on rapid admin dashboard development, less frontend hassle, useful features like repeaters, and a commitment to getting better with every release.",
     "type": "library",
     "keywords": [
         "laravel",
@@ -14,7 +14,7 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "RJ Codes",
+            "name": "Raj Maharjan",
             "email": "2rajm48952@gmail.com"
         }
     ],
