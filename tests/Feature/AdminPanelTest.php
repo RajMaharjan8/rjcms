@@ -63,10 +63,25 @@ it('authenticates the seeded admin through the real login flow', function () {
     $this->get('/admin/login')->assertRedirect(route('admin.dashboard'));
 });
 
+it('renders the users listing (authorized via the CMS guard)', function () {
+    $this->actingAs(superAdmin(), 'rjcms')
+        ->get('/admin/users')
+        ->assertOk();
+});
+
 it('resolves a package Livewire single-file component by bare name', function () {
     $this->actingAs(superAdmin(), 'rjcms');
 
     Livewire::test('admin.users-table')->assertOk();
+});
+
+it('changes a Livewire listing page size without error', function () {
+    $this->actingAs(superAdmin(), 'rjcms');
+
+    Livewire::test('admin.users-table')
+        ->set('perPage', 50)
+        ->assertOk()
+        ->assertSet('perPage', 50);
 });
 
 it('renders the public blog index', function () {

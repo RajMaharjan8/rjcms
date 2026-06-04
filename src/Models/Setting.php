@@ -43,6 +43,15 @@ class Setting extends Model
     }
 
     /**
+     * Whether this setting is protected from deletion (e.g. core branding like
+     * the site name and logo). Configured via `rjcms.locked_settings`.
+     */
+    public function isLocked(): bool
+    {
+        return in_array($this->key, config('rjcms.locked_settings', []), true);
+    }
+
+    /**
      * The field type enum for this setting.
      */
     public function fieldType(): BreadFieldType

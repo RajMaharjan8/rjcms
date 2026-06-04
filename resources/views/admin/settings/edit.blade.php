@@ -4,14 +4,16 @@
 @section('page-title', 'Edit setting: ' . $setting->display_name)
 
 @section('page-actions')
-    @can('delete_settings')
-        <form method="POST" action="{{ route('admin.settings.destroy', $setting) }}"
-              onsubmit="return confirm('Delete this setting and its value?')">
-            @csrf
-            @method('DELETE')
-            <x-admin.wp-button type="submit" variant="danger">Delete</x-admin.wp-button>
-        </form>
-    @endcan
+    @if (! $setting->isLocked())
+        @can('delete_settings')
+            <form method="POST" action="{{ route('admin.settings.destroy', $setting) }}"
+                  onsubmit="return confirm('Delete this setting and its value?')">
+                @csrf
+                @method('DELETE')
+                <x-admin.wp-button type="submit" variant="danger">Delete</x-admin.wp-button>
+            </form>
+        @endcan
+    @endif
 @endsection
 
 @section('content')

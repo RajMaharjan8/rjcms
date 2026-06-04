@@ -11,6 +11,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\View\View as ViewInstance;
 use Livewire\Livewire;
 use Rjcodes\Rjcms\Console\Commands\InstallCommand;
+use Rjcodes\Rjcms\Http\Middleware\UseRjcmsGuard;
 use Rjcodes\Rjcms\Models\Bread;
 use Rjcodes\Rjcms\Models\Permission;
 
@@ -44,6 +45,10 @@ class RjcmsServiceProvider extends ServiceProvider
         $this->registerRoutes();
         $this->registerViewsAndComponents();
         $this->registerLivewireComponents();
+
+        // Re-apply the CMS guard on Livewire update requests, so component
+        // authorization (@can / can:) resolves the package's User model.
+        Livewire::addPersistentMiddleware(UseRjcmsGuard::class);
         $this->registerAuthorization();
         $this->registerSidebarComposer();
 
@@ -85,10 +90,11 @@ class RjcmsServiceProvider extends ServiceProvider
     {
         $web = config('rjcms.middleware', ['web']);
 
-        // Admin panel — self-prefixes with config('rjcms.prefix'). Auth is
-        // pinned to the CMS guard explicitly inside the route file (not via the
-        // default guard), so it never depends on middleware ordering.
-        Route::middleware($web)->group(function (): void {
+        // Admin panel — self-prefixes with config('rjcms.prefix'). UseRjcmsGuard
+        // makes the CMS guard the default (so auth()/@can resolve the package
+        // User); auth is ALSO pinned explicitly in the route file so it never
+        // depends on middleware ordering.
+        Route::middleware([...$web, UseRjcmsGuard::class])->group(function (): void {
             $this->loadRoutesFrom(__DIR__.'/../routes/admin.php');
         });
 

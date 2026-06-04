@@ -84,6 +84,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Locked settings
+    |--------------------------------------------------------------------------
+    |
+    | Setting keys that may never be deleted (their Delete button is hidden and
+    | the destroy route refuses them). Core branding lives here. Add your own
+    | keys to protect them too.
+    |
+    */
+    'locked_settings' => [
+        'site.name',
+        'site.logo',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Default admin account
     |--------------------------------------------------------------------------
     |

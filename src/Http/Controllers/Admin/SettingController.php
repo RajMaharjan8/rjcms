@@ -149,6 +149,12 @@ class SettingController extends Controller implements HasMiddleware
      */
     public function destroy(Setting $setting): RedirectResponse
     {
+        if ($setting->isLocked()) {
+            return redirect()
+                ->route('admin.settings.index')
+                ->with('error', 'This setting is required and cannot be deleted.');
+        }
+
         $setting->delete();
 
         return redirect()
