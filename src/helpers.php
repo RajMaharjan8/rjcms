@@ -30,3 +30,19 @@ if (! function_exists('setting')) {
         return Setting::value($key, $default);
     }
 }
+
+if (! function_exists('rjcms_asset')) {
+    /**
+     * Build a URL to a published CMS asset (public/vendor/rjcms/...), with a
+     * cache-busting `?id=` based on the file's modified time. This means a host
+     * app that re-publishes assets after an upgrade always serves the fresh
+     * file instead of a browser-cached copy.
+     */
+    function rjcms_asset(string $file): string
+    {
+        $path = public_path('vendor/rjcms/'.ltrim($file, '/'));
+        $version = is_file($path) ? filemtime($path) : null;
+
+        return asset('vendor/rjcms/'.ltrim($file, '/')).($version ? '?id='.$version : '');
+    }
+}
