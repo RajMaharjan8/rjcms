@@ -19,6 +19,15 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, HasRoles, Notifiable;
 
+    /**
+     * The auth guard this model's roles/permissions belong to.
+     *
+     * Pinned to "web" so Spatie can always resolve the guard, even when the
+     * host app's `auth.providers.users.model` points at its own User model
+     * (the common case). Without this, syncRoles() throws GuardDoesNotMatch.
+     */
+    protected $guard_name = 'web';
+
     protected static function newFactory(): Factory
     {
         return UserFactory::new();

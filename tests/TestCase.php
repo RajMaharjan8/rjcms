@@ -4,7 +4,6 @@ namespace Rjcodes\Rjcms\Tests;
 
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
-use Rjcodes\Rjcms\Models\User;
 use Rjcodes\Rjcms\RjcmsServiceProvider;
 use Spatie\Permission\PermissionServiceProvider;
 
@@ -49,7 +48,9 @@ abstract class TestCase extends Orchestra
     protected function defineEnvironment($app): void
     {
         $app['config']->set('app.key', 'base64:'.base64_encode(random_bytes(32)));
-        $app['config']->set('auth.providers.users.model', User::class);
+        // Deliberately DO NOT point auth.providers at the package User model —
+        // a real host app keeps its own App\Models\User there. The package's
+        // User must resolve its Spatie guard on its own (via $guard_name).
         $app['config']->set('database.default', 'testing');
         $app['config']->set('database.connections.testing', [
             'driver' => 'sqlite',
