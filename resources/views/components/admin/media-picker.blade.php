@@ -141,8 +141,10 @@ new class extends Component
     {{-- Selected previews + trigger --}}
     <div class="flex flex-wrap items-center gap-3">
         @foreach ($this->selectedMedia as $item)
-            <div wire:key="preview-{{ $item->id }}" class="group relative h-20 w-20 overflow-hidden rounded border border-wp-border bg-gray-50">
-                <img src="{{ $item->thumbnail_url }}" alt="{{ $item->alt_text }}" loading="lazy" class="h-full w-full object-cover">
+            <div wire:key="preview-{{ $item->id }}" class="group relative h-20 w-20 overflow-hidden rounded border border-wp-border bg-gray-50"
+                 style="width:5rem;height:5rem;flex:0 0 auto;overflow:hidden">
+                <img src="{{ $item->thumbnail_url }}" alt="{{ $item->alt_text }}" loading="lazy" width="80" height="80"
+                     class="h-full w-full object-cover" style="width:100%;height:100%;aspect-ratio:1/1;object-fit:cover;display:block">
                 <button type="button" wire:click="remove({{ $item->id }})"
                         class="absolute top-0.5 right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-gray-900/70 text-xs text-white opacity-0 transition group-hover:opacity-100"
                         title="Remove">&times;</button>
@@ -150,7 +152,8 @@ new class extends Component
         @endforeach
 
         <button type="button" wire:click="$set('showModal', true)"
-                class="flex h-20 w-20 flex-col items-center justify-center gap-1 rounded border border-dashed border-wp-border bg-white text-wp-muted transition hover:border-wp-blue hover:text-wp-blue">
+                class="flex h-20 w-20 flex-col items-center justify-center gap-1 rounded border border-dashed border-wp-border bg-white text-wp-muted transition hover:border-wp-blue hover:text-wp-blue"
+                style="width:5rem;height:5rem;flex:0 0 auto">
             <span class="text-xl leading-none">+</span>
             <span class="text-[10px] font-medium">{{ $multiple ? 'Add' : ($selected ? 'Change' : 'Select') }}</span>
         </button>

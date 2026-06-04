@@ -61,9 +61,11 @@
 
         <div class="border-t border-white/10 p-4">
             <a href="{{ route('admin.account.edit') }}" class="flex items-center gap-2.5 rounded px-1 py-0.5 transition hover:bg-wp-menu-hover">
-                <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-wp-menu-hover text-sm font-semibold text-white">
+                <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-wp-menu-hover text-sm font-semibold text-white"
+                      style="width:2.25rem;height:2.25rem;flex:0 0 auto;overflow:hidden">
                     @if (auth()->user()->avatarUrl())
-                        <img src="{{ auth()->user()->avatarUrl() }}" alt="{{ auth()->user()->name }}" class="h-full w-full object-cover">
+                        <img src="{{ auth()->user()->avatarUrl() }}" alt="{{ auth()->user()->name }}" width="36" height="36"
+                             class="h-full w-full object-cover" style="width:100%;height:100%;aspect-ratio:1/1;object-fit:cover;display:block">
                     @else
                         {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
                     @endif
