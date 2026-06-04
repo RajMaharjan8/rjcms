@@ -36,7 +36,7 @@ class LoginController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        Auth::guard(config('rjcms.guard', 'rjcms'))->logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

@@ -1,12 +1,13 @@
 <?php
 
 use Livewire\Livewire;
+use Rjcodes\Rjcms\Database\Seeders\AdminUserSeeder;
 use Rjcodes\Rjcms\Database\Seeders\RolePermissionSeeder;
 use Rjcodes\Rjcms\Database\Seeders\SettingSeeder;
 use Rjcodes\Rjcms\Models\User;
 
 /**
- * Seed roles/settings and return an authenticated super admin.
+ * Seed roles/settings and return a super admin (not yet authenticated).
  */
 function superAdmin(): User
 {
@@ -26,25 +27,41 @@ it('renders the guest login page', function () {
 });
 
 it('renders the admin dashboard for a super admin', function () {
-    $this->actingAs(superAdmin())
+    // Authenticate against the CMS's own guard, exactly as the admin area does.
+    $this->actingAs(superAdmin(), 'rjcms')
         ->get('/admin')
         ->assertOk();
 });
 
 it('renders the BREAD builder index', function () {
-    $this->actingAs(superAdmin())
+    $this->actingAs(superAdmin(), 'rjcms')
         ->get('/admin/breads')
         ->assertOk();
 });
 
+it('authenticates the seeded admin through the real login flow', function () {
+    // Reproduces a real host: log in via POST, then load /admin. The CMS guard
+    // must resolve the package User (with HasRole) — not the host's App\Models\User.
+    (new RolePermissionSeeder)->setContainer(app())->run();
+    (new SettingSeeder)->setContainer(app())->run();
+    (new AdminUserSeeder)->setContainer(app())->run();
+
+    $this->post('/admin/login', [
+        'email' => config('rjcms.admin.email'),
+        'password' => config('rjcms.admin.password'),
+    ])->assertRedirect(route('admin.dashboard'));
+
+    $this->get('/admin')->assertOk();
+});
+
 it('resolves a package Livewire single-file component by bare name', function () {
-    $this->actingAs(superAdmin());
+    $this->actingAs(superAdmin(), 'rjcms');
 
     Livewire::test('admin.users-table')->assertOk();
 });
 
 it('renders the public blog index', function () {
-    SettingSeeder::class && (new SettingSeeder)->setContainer(app())->run();
+    (new SettingSeeder)->setContainer(app())->run();
 
     $this->get('/blog')->assertOk();
 });

@@ -52,7 +52,7 @@ class InstallCommand extends Command
         }
 
         $this->newLine();
-        $this->components->info('RJ CMS installed. Visit /'.ltrim((string) config('rjcms.prefix', 'admin'), '/').' to sign in.');
+        $this->components->info('RJ CMS installed. Visit /'.ltrim((string) config('rjcms.prefix', 'admin'), '/').'/login to sign in.');
 
         return self::SUCCESS;
     }

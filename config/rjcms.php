@@ -27,6 +27,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Auth guard
+    |--------------------------------------------------------------------------
+    |
+    | The CMS registers and uses its own session guard (backed by user_model)
+    | so it never touches the host app's default `web` guard / User model.
+    | Change this only if "rjcms" collides with a guard you already define.
+    |
+    */
+    'guard' => 'rjcms',
+
+    /*
+    |--------------------------------------------------------------------------
     | Admin panel URL prefix
     |--------------------------------------------------------------------------
     |

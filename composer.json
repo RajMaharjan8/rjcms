@@ -1,7 +1,7 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
     "name": "rjcodes/rjcms",
-    "description": "After spending countless hours with Voyager, I found myself wishing for 'just one more feature' a little too often. Instead of waiting, I started building. The result is a lightweight Laravel CMS focused on rapid admin dashboard development, less frontend hassle, useful features like repeaters, and a commitment to getting better with every release.",
+    "description": "A lightweight Laravel CMS package for rapidly building admin dashboards with minimal frontend coding.",
     "type": "library",
     "keywords": [
         "laravel",
